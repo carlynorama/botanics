@@ -86,12 +86,8 @@ monsteraDeliciosaFruitSites2(2, 10);
         cellsthisrow = cellswide;//Math.min(j*topexpansionslope, cellswide);
         for(var i = 0; i < cellsthisrow; i++) {
           var offcenterdistance = i-(cellsthisrow/2);
-          //if (offcenterdistance > 0) {
-
-          //var reverseOrder = j;
-          //var Q = Math.pow((reverseOrder-inflect),3)+Math.pow(reverseOrder-inflect,2)+ (reverseOrder-inflect);
           var scalar = inflect-j;
-           console.log(scalar);
+          console.log(scalar);
           var  rowspacing = xspace + scalar;
           var  colspacing = yspace+((cellshigh-j)*voffset);// + scalar;
           xlocation = midX;
@@ -104,7 +100,6 @@ monsteraDeliciosaFruitSites2(2, 10);
          }
 
          sites.push({x:xlocation, y:ylocation});
-       //}
      }
       }
      diagram = voronoi.compute(sites, bbox);
