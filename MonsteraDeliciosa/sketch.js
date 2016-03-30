@@ -86,7 +86,7 @@ monsteraDeliciosaFruitSites2(2, 10);
         cellsthisrow = cellswide;//Math.min(j*topexpansionslope, cellswide);
         for(var i = 0; i < cellsthisrow; i++) {
           var offcenterdistance = i-(cellsthisrow/2);
-          if (offcenterdistance > 0) {
+          //if (offcenterdistance > 0) {
 
           //var reverseOrder = j;
           //var Q = Math.pow((reverseOrder-inflect),3)+Math.pow(reverseOrder-inflect,2)+ (reverseOrder-inflect);
@@ -95,7 +95,7 @@ monsteraDeliciosaFruitSites2(2, 10);
           var  rowspacing = xspace + scalar;
           var  colspacing = yspace+((cellshigh-j)*voffset);// + scalar;
           xlocation = midX;
-          xlocation += offcenterdistance*(rowspacing)+ Rune.random(localfuzz);
+          xlocation += offcenterdistance*(rowspacing);//+ Rune.random(localfuzz);
           ylocation = j*(colspacing);//*(1+Rune.random(1+localfuzz/100));
          //console.log(xlocation);
          //console.log(ylocation);
@@ -104,7 +104,7 @@ monsteraDeliciosaFruitSites2(2, 10);
          }
 
          sites.push({x:xlocation, y:ylocation});
-       }
+       //}
      }
       }
      diagram = voronoi.compute(sites, bbox);
