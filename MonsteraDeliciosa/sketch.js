@@ -1,22 +1,17 @@
 var r = new Rune({
   container: "#canvas",
   width: 800,
-  height: 800,
+  height: 2000,
   debug: true
 });
 
 var voronoi = new Voronoi();
-var bbox = {xl: 0, xr: 800, yt: 0, yb: 800}; // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
+var bbox = {xl: 0, xr: 800, yt: 0, yb: 2000}; // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
 var sites = [ {x: 200, y: 200}, {x: 50, y: 250}, {x: 300, y: 100} /* , ... */ ];
 var margin = 13;
 var diagram = voronoi.compute(sites, bbox);
 
-//randomSites(30,1);
-var base = 60;
-//gridSites(base, base * 7 /8, base/2);
-//gridSites(base, base/2, 0);
-//taperGridSites(base, base * 7 /8, base/2, 3/5);
-taperGridSitesWithFuzz(base, base * 9/10, base/2, 1.3, 10);
+monsteraDeliciosaFruitSites(60, 10);
 
   for (slocs of sites) {
    //console.log(slocs);
@@ -56,47 +51,26 @@ taperGridSitesWithFuzz(base, base * 9/10, base/2, 1.3, 10);
   }
 
 
-   function gridSites(horizontal, vertical, hoffset) {
-     taperGridSites(horizontal, vertical, hoffset, 0);
-   }
-
-   function taperGridSites(horizontal, vertical, hoffset, vtaper) {
+   function monsteraDeliciosaFruitSites(base, fuzz) {
 
      var xlocation, ylocation;
-     var xspace = horizontal;
-     var yspace = vertical;
-     var xoffset = hoffset;
-     var voffset = vtaper;
+     var xspace = base;
+     var yspace = base * 9/10;
+     var xoffset = base/2;
+     var voffset = 0.9;
+     var localfuzz = fuzz;
+
+     var cellswide = 6;
+     var cellshigh = ((r.height/yspace)+2);
+
+     var vmidline = 0.5 * cellswide;
+     var hmidline = 0.5 * cellshigh;
 
      sites = [];
-     for(var i = 0; i < 50; i++) {
-      for(var j = 0; j < (r.height/yspace)+2; j++) {
-         xlocation = i*(xspace-j*voffset);
-         ylocation = j*(yspace-j*voffset);
-         //console.log(xlocation);
-         //console.log(ylocation);
-         if (j%2==0) {
-           xlocation +=xoffset;
-         }
-         sites.push({x:xlocation, y:ylocation});
-        }
-      }
-     diagram = voronoi.compute(sites, bbox);
-   }
-
-   function taperGridSitesWithFuzz(horizontal, vertical, hoffset, vtaper, fuzz) {
-
-     var xlocation, ylocation;
-     var xspace = horizontal;
-     var yspace = vertical;
-     var xoffset = hoffset;
-     var voffset = vtaper;
-
-     sites = [];
-     for(var i = 0; i < 5; i++) {
-      for(var j = 0; j < ((r.height/yspace)+2); j++) {
-         xlocation = i*(xspace-j*voffset) + Rune.random(fuzz);
-         ylocation = j*(yspace-j*voffset) + Rune.random(fuzz);
+     for(var i = 0; i < cellswide; i++) {
+      for(var j = 0; j < cellshigh; j++) {
+         xlocation = i*(xspace-j*voffset) + Rune.random(localfuzz);
+         ylocation = j*(yspace-j*voffset) + Rune.random(localfuzz);
          //console.log(xlocation);
          //console.log(ylocation);
          if (j%2==0) {
