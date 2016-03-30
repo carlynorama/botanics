@@ -11,7 +11,13 @@ var sites = [ {x: 200, y: 200}, {x: 50, y: 250}, {x: 300, y: 100} /* , ... */ ];
 var margin = 13;
 var diagram = voronoi.compute(sites, bbox);
 
-monsteraDeliciosaFruitSites(60, 10);
+//2 at the top
+//23 rows ish unitll bottom collar
+//8 ish rows in bottom collar
+// around 6 accross until very end
+// everything gets bigger as it goes up
+
+monsteraDeliciosaFruitSites2(5, 10);
 
   for (slocs of sites) {
    //console.log(slocs);
@@ -51,30 +57,72 @@ monsteraDeliciosaFruitSites(60, 10);
   }
 
 
-   function monsteraDeliciosaFruitSites(base, fuzz) {
+  //  function monsteraDeliciosaFruitSites(base, fuzz) {
+   //
+  //    var xlocation, ylocation;
+  //    var xspace = base;
+  //    var yspace = base * 9/10;
+  //    var xoffset = base/2;
+  //    var voffset = 0.9;
+  //    var localfuzz = fuzz;
+   //
+  //    var cellswide = 6;
+  //    var cellshigh = ((r.height/yspace)+2);
+   //
+  //    var vmidline = 0.5 * cellswide;
+  //    var hmidline = 0.5 * cellshigh;
+   //
+  //    sites = [];
+  //    for(var i = 0; i < cellswide; i++) {
+  //     for(var j = 0; j < cellshigh; j++) {
+  //        xlocation = i*(xspace-j*voffset) + Rune.random(localfuzz);
+  //        ylocation = j*(yspace-j*voffset) + Rune.random(localfuzz);
+  //        //console.log(xlocation);
+  //        //console.log(ylocation);
+  //        if (j%2==0) {
+  //          xlocation +=xoffset;
+  //        }
+  //        sites.push({x:xlocation, y:ylocation});
+  //       }
+  //     }
+  //    diagram = voronoi.compute(sites, bbox);
+  //  }
 
+   function monsteraDeliciosaFruitSites2(base, fuzz) {
+
+     var aspectratio = 1.3
      var xlocation, ylocation;
-     var xspace = base;
-     var yspace = base * 9/10;
-     var xoffset = base/2;
-     var voffset = 0.9;
+     var xspace = base*12;
+     var yspace = xspace * aspectratio;
+     var rowoffset = 0.5;
+     var voffset = 0.8;
      var localfuzz = fuzz;
 
-     var cellswide = 6;
-     var cellshigh = ((r.height/yspace)+2);
+     //2 at the top
+     //23 rows ish unitll bottom collar
+     //8 ish rows in bottom collar
+     // around 6 accross until very end
+     // everything gets bigger as it goes up
 
+     var cellswide = 6;
+     var cellshigh = 36;
+     var topexpansionslope = 1/aspectratio;//cellswide/8;
      var vmidline = 0.5 * cellswide;
      var hmidline = 0.5 * cellshigh;
 
      sites = [];
-     for(var i = 0; i < cellswide; i++) {
-      for(var j = 0; j < cellshigh; j++) {
-         xlocation = i*(xspace-j*voffset) + Rune.random(localfuzz);
-         ylocation = j*(yspace-j*voffset) + Rune.random(localfuzz);
+
+      for(var j = 1; j < cellshigh+1; j++) {
+        cellsthisrow = Math.min(j*topexpansionslope, cellswide);
+        for(var i = 0; i < cellsthisrow; i++) {
+          var  horizontalspace = xspace-j*voffset;
+          var  verticalspace = yspace-j*voffset;
+         xlocation = i*(horizontalspace);//+ Rune.random(localfuzz);
+         ylocation = j*(verticalspace);//*(1+Rune.random(1+localfuzz/100));
          //console.log(xlocation);
          //console.log(ylocation);
          if (j%2==0) {
-           xlocation +=xoffset;
+           xlocation +=(horizontalspace/rowoffset);
          }
          sites.push({x:xlocation, y:ylocation});
         }
