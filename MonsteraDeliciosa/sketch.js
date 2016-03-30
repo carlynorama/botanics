@@ -17,7 +17,8 @@ var diagram = voronoi.compute(sites, bbox);
 // around 6 accross until very end
 // everything gets bigger as it goes up
 
-monsteraDeliciosaFruitSites2(2, 10);
+monsteraDeliciosaFruitSites2(3, 0);
+//monsteraDeliciosaFruitSites2(2, 10);
 
   for (slocs of sites) {
    //console.log(slocs);
@@ -72,7 +73,7 @@ monsteraDeliciosaFruitSites2(2, 10);
      // around 6 accross until very end
      // everything gets bigger as it goes up
 
-     var cellswide = 10;
+     var cellswide = 9;
      var cellshigh = 32;
      var topexpansionslope = 1/aspectratio;//cellswide/8;
      var vmidline = 0.5 * cellswide;
@@ -83,21 +84,24 @@ monsteraDeliciosaFruitSites2(2, 10);
      sites = [];
 
       for(var j = 1; j < cellshigh+1; j++) {
-        cellsthisrow = cellswide;//Math.min(j*topexpansionslope, cellswide);
+        //cellsthisrow = cellswide;//Math.min(j*topexpansionslope, cellswide);
+        cellsthisrow = Math.min(j*topexpansionslope, cellswide);
         for(var i = 0; i < cellsthisrow; i++) {
-          var offcenterdistance = i-(cellsthisrow/2);
+          var offcenterdistance = ~~(i-(cellsthisrow/2));
+          console.log(offcenterdistance);
           var scalar = inflect-j;
-          console.log(scalar);
+          //console.log(scalar);
           var  rowspacing = xspace + scalar;
           var  colspacing = yspace+((cellshigh-j)*voffset);// + scalar;
           xlocation = midX;
-          xlocation += offcenterdistance*(rowspacing);//+ Rune.random(localfuzz);
-          ylocation = j*(colspacing);//*(1+Rune.random(1+localfuzz/100));
+          if (j%2==0) {
+            xlocation +=(rowspacing*rowoffset);
+          }
+          xlocation += offcenterdistance*(rowspacing)+ Rune.random(localfuzz);
+          ylocation = j*(colspacing)+Rune.random(localfuzz);
          //console.log(xlocation);
          //console.log(ylocation);
-         if (j%2==0) {
-           xlocation +=(rowspacing*rowoffset);
-         }
+
 
          sites.push({x:xlocation, y:ylocation});
      }
