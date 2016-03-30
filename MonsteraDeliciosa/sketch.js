@@ -1,12 +1,12 @@
 var r = new Rune({
   container: "#canvas",
   width: 800,
-  height: 3000,
+  height: 2000,
   debug: true
 });
 
 var voronoi = new Voronoi();
-var bbox = {xl: 0, xr: 800, yt: 0, yb: 3000}; // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
+var bbox = {xl: 0, xr: 800, yt: 0, yb: 2000}; // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
 var sites = [ {x: 200, y: 200}, {x: 50, y: 250}, {x: 300, y: 100} /* , ... */ ];
 var margin = 13;
 var diagram = voronoi.compute(sites, bbox);
@@ -58,12 +58,12 @@ monsteraDeliciosaFruitSites2(2, 10);
 
    function monsteraDeliciosaFruitSites2(base, fuzz) {
 
-     var aspectratio = 1.3
+     var aspectratio = 1.3333
      var xlocation, ylocation;
      var xspace = base*12;
      var yspace = xspace * aspectratio;
      var rowoffset = 0.5;
-     var voffset = 0.8;
+     var voffset = 1/aspectratio;
      var localfuzz = fuzz;
 
      //2 at the top
@@ -73,29 +73,39 @@ monsteraDeliciosaFruitSites2(2, 10);
      // everything gets bigger as it goes up
 
      var cellswide = 10;
-     var cellshigh = 80;
+     var cellshigh = 32;
      var topexpansionslope = 1/aspectratio;//cellswide/8;
      var vmidline = 0.5 * cellswide;
      var hmidline = 0.5 * cellshigh;
+     var midX = r.width/2;
+     var inflect = 0.75*cellshigh;
 
      sites = [];
 
       for(var j = 1; j < cellshigh+1; j++) {
-        cellsthisrow = cellswide; //Math.min(j*topexpansionslope, cellswide);
+        cellsthisrow = cellswide;//Math.min(j*topexpansionslope, cellswide);
         for(var i = 0; i < cellsthisrow; i++) {
-          var Q = cellshigh/(j*aspectratio);
-           console.log(Q);
-          var  rowspacing = Q*(xspace-j*voffset);
-          var  colspacing = Q*(yspace-j*voffset);
-         xlocation = i*(rowspacing);//+ Rune.random(localfuzz);
-         ylocation = j*(colspacing);//*(1+Rune.random(1+localfuzz/100));
+          var offcenterdistance = i-(cellsthisrow/2);
+          if (offcenterdistance > 0) {
+
+          //var reverseOrder = j;
+          //var Q = Math.pow((reverseOrder-inflect),3)+Math.pow(reverseOrder-inflect,2)+ (reverseOrder-inflect);
+          var scalar = inflect-j;
+           console.log(scalar);
+          var  rowspacing = xspace + scalar;
+          var  colspacing = yspace+((cellshigh-j)*voffset);// + scalar;
+          xlocation = midX;
+          xlocation += offcenterdistance*(rowspacing)+ Rune.random(localfuzz);
+          ylocation = j*(colspacing);//*(1+Rune.random(1+localfuzz/100));
          //console.log(xlocation);
          //console.log(ylocation);
          if (j%2==0) {
            xlocation +=(rowspacing*rowoffset);
          }
+
          sites.push({x:xlocation, y:ylocation});
-        }
+       }
+     }
       }
      diagram = voronoi.compute(sites, bbox);
    }
