@@ -73,9 +73,9 @@ monsteraDeliciosaFruitSites2(3, 0);
      // around 6 accross until very end
      // everything gets bigger as it goes up
 
-     var cellswide = 9;
+     var cellswide = 20;
      var cellshigh = 32;
-     var topexpansionslope = 1/aspectratio;//cellswide/8;
+     var topexpansionslope = 1;//cellswide/8;
      var vmidline = 0.5 * cellswide;
      var hmidline = 0.5 * cellshigh;
      var midX = r.width/2;
@@ -92,10 +92,10 @@ monsteraDeliciosaFruitSites2(3, 0);
           var scalar = inflect-j;
           //console.log(scalar);
           var  xspacing = xspace + scalar;
-          if (cellsthisrow == cellshigh) {
+          if (cellsthisrow < cellswide) {
             var  yspacing = yspace+((cellshigh-j)*voffset);
           } else {
-            var  yspacing = yspace+((cellshigh-j)*voffset);
+            var  yspacing = (yspace+((cellshigh-j)*voffset))/4;
           }
           xlocation = midX;
           if (j%2==0) {
