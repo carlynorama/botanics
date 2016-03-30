@@ -84,21 +84,25 @@ monsteraDeliciosaFruitSites2(3, 0);
      sites = [];
 
       for(var j = 1; j < cellshigh+1; j++) {
-        //cellsthisrow = cellswide;//Math.min(j*topexpansionslope, cellswide);
+        //cellsthisrow = cellswide;
         cellsthisrow = Math.min(j*topexpansionslope, cellswide);
         for(var i = 0; i < cellsthisrow; i++) {
           var offcenterdistance = ~~(i-(cellsthisrow/2));
-          console.log(offcenterdistance);
+          //console.log(offcenterdistance);
           var scalar = inflect-j;
           //console.log(scalar);
-          var  rowspacing = xspace + scalar;
-          var  colspacing = yspace+((cellshigh-j)*voffset);// + scalar;
+          var  xspacing = xspace + scalar;
+          if (cellsthisrow == cellshigh) {
+            var  yspacing = yspace+((cellshigh-j)*voffset);
+          } else {
+            var  yspacing = yspace+((cellshigh-j)*voffset);
+          }
           xlocation = midX;
           if (j%2==0) {
-            xlocation +=(rowspacing*rowoffset);
+            xlocation +=(xspacing*rowoffset);
           }
-          xlocation += offcenterdistance*(rowspacing)+ Rune.random(localfuzz);
-          ylocation = j*(colspacing)+Rune.random(localfuzz);
+          xlocation += offcenterdistance*(xspacing)+ Rune.random(localfuzz);
+          ylocation = j*(yspacing)+Rune.random(localfuzz);
          //console.log(xlocation);
          //console.log(ylocation);
 
