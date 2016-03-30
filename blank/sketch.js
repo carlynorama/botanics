@@ -10,17 +10,19 @@ var bbox = {xl: 0, xr: 800, yt: 0, yb: 800}; // xl is x-left, xr is x-right, yt 
 var sites = [ {x: 200, y: 200}, {x: 50, y: 250}, {x: 300, y: 100} /* , ... */ ];
 var margin = 13;
 var diagram = voronoi.compute(sites, bbox);
+
 //randomSites(30,1);
 var base = 40;
 //gridSites(base, base * 7 /8, base/2);
 //gridSites(base, base/2, 0);
 taperGridSites(base, base * 7 /8, base/2, 3/5);
+taperGridSitesWithFuzz(base, base * 7 /8, base/2, 3/5, 10);
 
   for (slocs of sites) {
    //console.log(slocs);
    r.ellipse(slocs.x, slocs.y, 5, 5)
      .fill(0, 0, 255)
-     .stroke(false)// logs "3", "5", "7"
+     .stroke(false)
   }
 
   // for (clocs in diagram.vertex) {
@@ -71,8 +73,32 @@ taperGridSites(base, base * 7 /8, base/2, 3/5);
       for(var j = 0; j < (r.height/yspace)+2; j++) {
          xlocation = i*(xspace-j*voffset);
          ylocation = j*(yspace-j*voffset);
-         console.log(xlocation);
-         console.log(ylocation);
+         //console.log(xlocation);
+         //console.log(ylocation);
+         if (j%2==0) {
+           xlocation +=xoffset;
+         }
+         sites.push({x:xlocation, y:ylocation});
+        }
+      }
+     diagram = voronoi.compute(sites, bbox);
+   }
+
+   function taperGridSitesWithFuzz(horizontal, vertical, hoffset, vtaper, fuzz) {
+
+     var xlocation, ylocation;
+     var xspace = horizontal;
+     var yspace = vertical;
+     var xoffset = hoffset;
+     var voffset = vtaper;
+
+     sites = [];
+     for(var i = 0; i < 50; i++) {
+      for(var j = 0; j < (r.height/yspace)+2; j++) {
+         xlocation = i*(xspace-j*voffset) + Rune.random(fuzz);
+         ylocation = j*(yspace-j*voffset) + Rune.random(fuzz);
+         //console.log(xlocation);
+         //console.log(ylocation);
          if (j%2==0) {
            xlocation +=xoffset;
          }
