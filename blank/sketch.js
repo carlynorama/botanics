@@ -15,8 +15,9 @@ var diagram = voronoi.compute(sites, bbox);
 var base = 40;
 //gridSites(base, base * 7 /8, base/2);
 //gridSites(base, base/2, 0);
-taperGridSites(base, base * 7 /8, base/2, 3/5);
-taperGridSitesWithFuzz(base, base * 7 /8, base/2, 3/5, 10);
+//taperGridSites(base, 1.3, 1/2, 3/5);
+taperGridSitesWithFuzz(base, 1.3, 1/2, 0, 5);
+//taperGridSitesWithFuzz(base, base * 7 /8, base/2, 3/5, 5);
 
   for (slocs of sites) {
    //console.log(slocs);
@@ -56,51 +57,35 @@ taperGridSitesWithFuzz(base, base * 7 /8, base/2, 3/5, 10);
   }
 
 
-   function gridSites(horizontal, vertical, hoffset) {
-     taperGridSites(horizontal, vertical, hoffset, 0);
+   function gridSites(base, ratio, hoffset) {
+     taperGridSites(base,ratio, hoffset, 0);
    }
 
-   function taperGridSites(horizontal, vertical, hoffset, vtaper) {
+   function taperGridSites(base, ratio, hoffset, vtaper) {
+
+     taperGridSitesWithFuzz(base, ratio, hoffset, vtaper, 0);
+   }
+
+   function taperGridSitesWithFuzz(base, ratio, hoffset, vtaper, fuzz) {
 
      var xlocation, ylocation;
-     var xspace = horizontal;
-     var yspace = vertical;
-     var xoffset = hoffset;
+     var xspace = base;
+     var yspace = base*ratio;
+     var rowoffset = hoffset;
      var voffset = vtaper;
 
      sites = [];
-     for(var i = 0; i < 50; i++) {
+
       for(var j = 0; j < (r.height/yspace)+2; j++) {
-         xlocation = i*(xspace-j*voffset);
-         ylocation = j*(yspace-j*voffset);
+        var rowspacing = xspace-j*voffset;
+        var colspacing = yspace-j*voffset;
+        for(var i = 0; i < 50; i++) {
+         xlocation = i*(rowspacing) + Rune.random(fuzz);
+         ylocation = j*(colspacing) + Rune.random(fuzz);
          //console.log(xlocation);
          //console.log(ylocation);
          if (j%2==0) {
-           xlocation +=xoffset;
-         }
-         sites.push({x:xlocation, y:ylocation});
-        }
-      }
-     diagram = voronoi.compute(sites, bbox);
-   }
-
-   function taperGridSitesWithFuzz(horizontal, vertical, hoffset, vtaper, fuzz) {
-
-     var xlocation, ylocation;
-     var xspace = horizontal;
-     var yspace = vertical;
-     var xoffset = hoffset;
-     var voffset = vtaper;
-
-     sites = [];
-     for(var i = 0; i < 50; i++) {
-      for(var j = 0; j < (r.height/yspace)+2; j++) {
-         xlocation = i*(xspace-j*voffset) + Rune.random(fuzz);
-         ylocation = j*(yspace-j*voffset) + Rune.random(fuzz);
-         //console.log(xlocation);
-         //console.log(ylocation);
-         if (j%2==0) {
-           xlocation +=xoffset;
+           xlocation +=(rowspacing*rowoffset);
          }
          sites.push({x:xlocation, y:ylocation});
         }

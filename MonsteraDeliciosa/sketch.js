@@ -115,14 +115,14 @@ monsteraDeliciosaFruitSites2(5, 10);
       for(var j = 1; j < cellshigh+1; j++) {
         cellsthisrow = Math.min(j*topexpansionslope, cellswide);
         for(var i = 0; i < cellsthisrow; i++) {
-          var  horizontalspace = xspace-j*voffset;
-          var  verticalspace = yspace-j*voffset;
-         xlocation = i*(horizontalspace);//+ Rune.random(localfuzz);
-         ylocation = j*(verticalspace);//*(1+Rune.random(1+localfuzz/100));
+          var  rowspacing = xspace-j*voffset;
+          var  colspacing = yspace-j*voffset;
+         xlocation = i*(rowspacing);//+ Rune.random(localfuzz);
+         ylocation = j*(colspacing);//*(1+Rune.random(1+localfuzz/100));
          //console.log(xlocation);
          //console.log(ylocation);
          if (j%2==0) {
-           xlocation +=(horizontalspace/rowoffset);
+           xlocation +=(rowspacing*rowoffset);
          }
          sites.push({x:xlocation, y:ylocation});
         }
