@@ -16,8 +16,15 @@ var diagram = voronoi.compute(sites, bbox);
 //8 ish rows in bottom collar
 // around 6 accross until very end
 // everything gets bigger as it goes up
-
-sitesOnCircle(r.width/2, r.height/2, 80, Math.PI/12);
+sites = [];
+//circles
+//  for(var c = 1; c < 10; c++) {
+//    sitesOnCircle(0, r.width/2, r.height/2, 25*c, (Math.PI/12));
+// }
+//spiral
+for(var c = 1; c < 10; c++) {
+  sitesOnSpiral(0, r.width/2, r.height/2, 30*c, (Math.PI/12), (Math.PI/36)*c);
+}
 
   for (slocs of sites) {
    //console.log(slocs);
@@ -56,12 +63,50 @@ sitesOnCircle(r.width/2, r.height/2, 80, Math.PI/12);
   		diagram = voronoi.compute(sites, bbox);
   }
 
-   function sitesOnCircle(originX, originY, radius, radians) {
-     r.circle(originX, originY, radius)
-       .fill(false)
-       .stroke(100,100,100)
+   function sitesOnCircle(clear, originX, originY, radius, radians) {
+     if (clear) {sites = [];}
+     //sites.push({x:originX, y:originY});
+
+     var theta = radians;
+     var R = radius;
+
+    //  r.circle(originX, originY, radius)
+    //    .fill(false)
+    //    .stroke(100,100,100)
 
     var n = (2*Math.PI)/radians;
+
+    for(var i = 0; i < n; i++) {
+        tempy = Math.sin(theta*i)*R;
+        tempx = Math.cos(theta*i)*R;
+        tempx += originX;
+        tempy += originY;
+        sites.push({x:tempx, y:tempy});
+    }
+    diagram = voronoi.compute(sites, bbox);
+  }
+
+    function sitesOnSpiral(clear, originX, originY, radius, radians, twist) {
+      if (clear) {sites = [];}
+      //sites.push({x:originX, y:originY});
+
+      var theta = radians;
+      var R = radius;
+
+     //  r.circle(originX, originY, radius)
+     //    .fill(false)
+     //    .stroke(100,100,100)
+
+     var n = (2*Math.PI)/radians;
+
+     for(var i = 0; i < n; i++) {
+         var myTheta = theta*i + twist;
+         tempy = Math.sin(myTheta)*R;
+         tempx = Math.cos(myTheta)*R;
+         tempx += originX;
+         tempy += originY;
+         sites.push({x:tempx, y:tempy});
+     }
 
     //Since the whole circle is 2 * PI radians, circle center
     //is at (0, 0) and suppose you have n dots, you have to
@@ -69,7 +114,7 @@ sitesOnCircle(r.width/2, r.height/2, 80, Math.PI/12);
     //and y = R * sin(i * 2 * PI / n) for i = 0..n-1 where R is the
     //radius of current circle.
 
-     sites.push({x:originX, y:originY});
+
 
      diagram = voronoi.compute(sites, bbox);
    }
